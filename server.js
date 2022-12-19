@@ -19,13 +19,23 @@ app.listen(process.env.PORT || 8000, () => {
 
 
 
-app.use(cors());
+if(process.env.NODE_ENV !== 'production') {
+  app.use(
+    cors({
+      origin: ['http://localhost:3000'],
+      credentials: true,
+    })
+  );
+}
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(session({
-  secret: 'xyz567',
+  secret: process.env.SECRET_KEY,
   resave: false, 
   saveUninitialized: false,
+  cookie: {
+    secure: process.env.NODE_ENV == 'production',
+  },
   store: MongoStore.create({
     mongoUrl: 'mongodb://localhost:27017/NoticeBoard',
   })
