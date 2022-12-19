@@ -11,7 +11,7 @@ const connectToDB = () => {
   else dbUri = 'mongodb://localhost:27017/NoticeBoard';
 
   mongoose.connect(dbUri, {
-    useNewUrlParser: true,
+    useNewUrlParser: true, 
     useUnifiedTopology: true,
   });
   const db = mongoose.connection;

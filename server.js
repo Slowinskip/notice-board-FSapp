@@ -5,7 +5,7 @@ const connectToDB = require('./db');
 const session = require('express-session');
 const MongoStore = require('connect-mongo');
 const mongoose = require('mongoose');
-
+require('dotenv').config();
 
 const adsRoutes = require('./routes/ads.routes');
 const authRoutes = require('./routes/auth.routes');
@@ -30,7 +30,7 @@ if(process.env.NODE_ENV !== 'production') {
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(session({
-  secret: process.env.SECRET_KEY,
+  secret: process.env.SECRET,
   resave: false, 
   saveUninitialized: false,
   cookie: {
