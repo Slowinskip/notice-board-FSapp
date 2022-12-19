@@ -4,7 +4,7 @@ const path = require('path');
 const connectToDB = require('./db');
 
 const adsRoutes = require('./routes/ads.routes');
-const authRoutes = require('./routes/auth.routes');
+const userRoutes = require('./routes/user.routes');
 
 
 const app = express();
@@ -16,7 +16,7 @@ app.use(express.urlencoded({ extended: false }));
 connectToDB();
 
 app.use('/api', adsRoutes);
-app.use('/auth', authRoutes);
+app.use('/auth', userRoutes);
 
 // app.get('*', (req, res) => {
 //     res.sendFile(path.join(__dirname + '/client/build/index.html'));
