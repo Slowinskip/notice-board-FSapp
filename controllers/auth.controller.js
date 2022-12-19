@@ -44,10 +44,8 @@ exports.login = async (req, res) => {
                 res.status(400).send({message: 'Login or password are incorrect'})
             } else {
                 if(bcrypy.compareSync(password, user.password)){
-                    req.session.user ={
-                        login: user.login,
-                        id: user._id
-                    }
+                    req.session.login = user;
+                    req.session.id = user._id;
 
                     res.status(200).send( {message: 'Login successful' })
                 }else{
@@ -66,7 +64,7 @@ exports.login = async (req, res) => {
 }
 
 exports.getUser = async (req, res) => {
-    res.send({ message:'You are logged ' + req.session.user })
+    res.send({ message:'You are logged ' + req.session.login + ' ' + req.session.id })
 }
 
 exports.logout = async (req, res) => {

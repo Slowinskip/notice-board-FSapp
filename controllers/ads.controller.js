@@ -1,4 +1,7 @@
 const Ads = require('../models/ads.model');
+const fs = require('fs');
+const getImageFileType = require('../utils/getImageFileType');
+
 
 exports.getAll = async (req, res) => {
     try {
@@ -23,17 +26,34 @@ exports.getById = async (req, res) => {
 }
 
 exports.post = async (req, res) => {
-    try {
-        const { title, description, date, image, price, localization, user} = req.body;
-        const newAd = new Ads({ title, description, date, image, price, localization, user});
-        await newAd.save();
-        res.json({ message: 'OK' });
-      } catch (err) {
-        res.status(500).json({ message: err });
-    }
-    
-}
+  try {
+    const { title, description, date, price, localization, user} = req.body;
+    const fileType = req.file ? await getImageFileType(req.file) : 'unknown';
 
+    if(title && description && date && price && localization && req.file && ['image/png', 'image/jpeg', 'image/gif'].includes(fileType)){
+      const newAd = new Ads({
+        title:title,
+        description:description,
+        date:date,
+        price:price,
+        localization:localization,
+        image: req.file.filename,
+        user: req.session.id
+      })
+      await newAd.save();
+        res.json({ message: 'New Ads' });
+    } else {
+      if(req.file){
+        fs.unlinkSync(`./public/uploads/${req.file.filename}`);
+      }
+      res.status(400).send({message: 'Bed request'})
+
+    }
+
+  }catch(err) {
+    res.status(500).json({ message: err });
+      }
+}    
 exports.delete = async (req, res) => {
     try {
         const ad = await Ads.findById(req.params.id);
@@ -49,40 +69,35 @@ exports.delete = async (req, res) => {
     
 }
 
+
 exports.edit = async (req, res) => {
-    const { firstName, lastName } = req.body;
-    try {
-      const dep = await Employees.findById(req.params.id);
-      if(dep) {
-        await Employees.updateOne({ _id: req.params.id }, { $set: { firstName: firstName, lastName: lastName }});
-        res.json({ message: 'OK' });
+  const { title, description, date, price, localization} = req.body;
+
+  try {
+    const ad = await Ads.findById(req.params.id);
+    if(ad) {
+      ad.title = title;
+      ad.description = description;
+      ad.price = price;
+      ad.date = date;
+      ad.localization = localization;
+      if (req.file && ['image/png', 'image/jpeg', 'image/gif'].includes(fileType)) {
+        ad.image = req.file.filename;
       }
-      else res.status(404).json({ message: 'Not found...' });
+      const updatedAd = await ad.save();
+      res.json(updatedAd);
     }
-    catch(err) {
-      res.status(500).json({ message: err });
-    }
-  
-}
+    else {
+      if(req.file){
+        fs.unlinkSync(`./public/uploads/${req.file.filename}`);
+      }
 
-exports.edit = async (req, res) => {
-    const { title, description, date, image, price, localization, user} = req.body;
-    try {
-        const ad = await Ads.findById(req.params.id);
-        if (!ad) return res.status(404).json({ message: 'Ad not found' });
-        else {
-          ad.title = title;
-          ad.description = description;
-          ad.price = price;
-          ad.date = date;
-          ad.localization = localization;
-          ad.user = user;
-          ad.image = image;
-          const updatedAd = await ad.save();
-          res.json({message: 'OK'});
-        }
-    } catch (err) {
+      res.status(404).json({ message: 'Not found...' })};
+  }
+  catch(err) {
+    if(req.file){
+      fs.unlinkSync(`./public/uploads/${req.file.filename}`);
+    }
     res.status(500).json({ message: err });
-    }
+  }
 };
-

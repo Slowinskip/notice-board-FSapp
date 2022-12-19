@@ -16,6 +16,7 @@ const app = express();
 app.listen(process.env.PORT || 8000, () => {
   console.log('Server is running...');
 });
+connectToDB();
 
 
 
@@ -41,15 +42,15 @@ app.use(session({
   })
 }));
 
-connectToDB();
-
+app.use(express.static(path.join(__dirname, '/client/build')));
+app.use(express.static(path.join(__dirname, '/public')));
 
 app.use('/api', adsRoutes);
 app.use('/auth', authRoutes);
 
-// app.get('*', (req, res) => {
-//     res.sendFile(path.join(__dirname + '/client/build/index.html'));
-//   });
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname + '/client/build/index.html'));
+  });
   
 app.use((req, res) => {
 res.status(404).send({ message: 'Not found...' });
