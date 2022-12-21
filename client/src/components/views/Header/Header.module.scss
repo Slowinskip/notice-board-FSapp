@@ -1,0 +1,35 @@
+@import '../../../styles/settings.scss';
+
+nav {
+  background-color: $color-gold;
+}
+
+.logo {
+  text-decoration: none;
+  color: $color-light;
+}
+
+.nav_wrapper {
+  font-size: $base-size * 1.5;
+  font-weight: bold;
+  margin: 0 ($base-size * 10);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nav_list {
+  list-style: none;
+  display: inline-flex;
+  li {
+    padding: $base-size;
+  }
+
+  a {
+    text-decoration: none;
+    color: $color-light;
+  }
+  a.linkActive {
+    color: $color-red;
+  }
+}

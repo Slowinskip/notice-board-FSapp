@@ -1,11 +1,7 @@
-
-
+import styles from './Footer.module.scss'
 
 const Footer = () => {
-  
-    return (
-        <h2>Footer</h2> 
-    );
+  return <div className={styles.footer}>Copyright 2022 Patryk</div>
 }
 
-export default Footer;
+export default Footer

@@ -1,10 +1,8 @@
-import { Container } from "react-bootstrap";
-import { Routes, Route } from 'react-router-dom';
-import Home from "./components/pages/Home/Home";
-import Footer from "./components/views/Footer/Footer";
-import Header from "./components/views/Header/Header";
-
-
+import { Container } from 'react-bootstrap'
+import { Routes, Route } from 'react-router-dom'
+import Home from './components/pages/Home/Home'
+import Footer from './components/views/Footer/Footer'
+import Header from './components/views/Header/Header'
 
 const App = () => {
   return (
@@ -12,12 +10,12 @@ const App = () => {
       <Header />
       <Container>
         <Routes>
-          <Route path='/' element={<Home />} />
+          <Route path="/" element={<Home />} />
         </Routes>
       </Container>
       <Footer />
     </main>
-  );
+  )
 }
 
-export default App;
+export default App
