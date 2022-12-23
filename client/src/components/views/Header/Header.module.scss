@@ -1,12 +1,15 @@
 @import '../../../styles/settings.scss';
 
 nav {
-  background-color: $color-gold;
+  background-color: $color-dark;
 }
 
 .logo {
   text-decoration: none;
   color: $color-light;
+  &:hover {
+    color: $color-light;
+  }
 }
 
 .nav_wrapper {
@@ -30,6 +33,6 @@ nav {
     color: $color-light;
   }
   a.linkActive {
-    color: $color-red;
+    color: $color-warning;
   }
 }
