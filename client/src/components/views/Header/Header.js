@@ -1,8 +1,10 @@
 import styles from './Header.module.scss'
 import { NavLink } from 'react-router-dom'
 import { useSelector } from 'react-redux'
+import { getUser } from '../../../redux/usersRedux'
 const Header = () => {
-  const user = 1
+  const user = useSelector(getUser)
+  console.log(user)
 
   return (
     <nav>
@@ -20,6 +22,7 @@ const Header = () => {
             >
               Home
             </NavLink>
+            x
           </li>
           <li>
             {!user && (
