@@ -2,11 +2,8 @@ import React, { useState } from 'react'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import { useForm } from 'react-hook-form'
-import { API_URL } from '../../../config'
-import { useNavigate } from 'react-router-dom'
 const AdForm = ({ action, actionText, ...props }) => {
   const updateDate = new Date()
-  const navigate = useNavigate()
 
   const id = props.id
   const [price, setPrice] = useState(props.price || '')
@@ -22,28 +19,20 @@ const AdForm = ({ action, actionText, ...props }) => {
     formState: { errors },
   } = useForm()
 
-  const handleSubmit = (e) => {
-    const fd = new FormData()
-    fd.append('title', title)
-    fd.append('description', description)
-    fd.append('date', date)
-    fd.append('price', price)
-    fd.append('localization', localization)
-    fd.append('phone', phoneNumber)
-    fd.append('image', image)
-    fd.append('user', props.user)
-
-    const options = {
-      method: 'PUT',
-      body: fd,
+  const handleSubmit = () => {
+    if (description && date) {
+      action({
+        price,
+        title,
+        user: props.user,
+        date: date,
+        description,
+        localization,
+        id,
+        image,
+        phoneNumber,
+      })
     }
-    fetch(API_URL + '/api/ads/' + id, options).then((res) => {
-      if (res.status === 200) {
-        setTimeout(() => navigate('/'), 2000)
-      } else if (res.status === 400) {
-      } else {
-      }
-    })
   }
 
   return (
@@ -51,7 +40,7 @@ const AdForm = ({ action, actionText, ...props }) => {
       className="col-12 col-sm-3 mx-auto mt-3"
       onSubmit={validate(handleSubmit)}
     >
-      <h1 className="my-4">{actionText}</h1>
+      <h1 className="my-4">{actionText} Ads</h1>
       <Form.Group className="mb-3" controlId="formPrice">
         <Form.Label>Price</Form.Label>
         <Form.Control
@@ -142,7 +131,7 @@ const AdForm = ({ action, actionText, ...props }) => {
           onChange={(e) => setImage(e.target.files[0])}
         />
       </Form.Group>
-      <Button className="mt-3" as="input" type="submit" value="Submit" />{' '}
+      <Button className="mt-3" as="input" type="submit" value="Submit"></Button>{' '}
     </Form>
   )
 }

@@ -4,7 +4,6 @@ import { useSelector } from 'react-redux'
 import { getUser } from '../../../redux/usersRedux'
 const Header = () => {
   const user = useSelector(getUser)
-  console.log(user)
 
   return (
     <nav>

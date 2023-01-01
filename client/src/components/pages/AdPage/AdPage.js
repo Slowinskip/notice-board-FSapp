@@ -1,25 +1,49 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Button from 'react-bootstrap/Button'
 import Card from 'react-bootstrap/Card'
-import { IMAGES_URL } from '../../../config'
+import { API_URL, IMAGES_URL } from '../../../config'
 import { useDispatch } from 'react-redux'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
-import { getAdById } from '../../../redux/adsRedux'
+import { getAdById, removeAd, updateAds } from '../../../redux/adsRedux'
 import styles from './AdPage.module.scss'
 import { Link } from 'react-router-dom'
+import ModalDelete from '../../features/ModalDelete/ModalDelete'
 const AdPage = () => {
+  const navigate = useNavigate()
   const dispatch = useDispatch()
+
   const adId = useParams()
   const id = adId.id
-
   const adData = useSelector((state) => getAdById(state, id))
 
+  const [showModal, setShowModal] = useState(false)
+  const handleClose = () => setShowModal(false)
+  const handleShow = () => setShowModal(true)
+
+  const handleDelete = (e) => {
+    e.preventDefault()
+    const options = {
+      method: 'DELETE',
+      credentials: 'include',
+    }
+    fetch(API_URL + '/api/ads/' + id, options)
+    updateAds()
+    navigate('/')
+  }
   return (
     <div>
       <Row className="d-flex justify-content-center mt-5">
+        if (showModal)
+        {
+          <ModalDelete
+            showModal={showModal}
+            handleClose={handleClose}
+            handleDelete={handleDelete}
+          />
+        }
         <Col xs="12" lg="5">
           <Card className={styles.card_wrapper}>
             <Card.Img variant="top" src={IMAGES_URL + adData.image} />
@@ -50,7 +74,9 @@ const AdPage = () => {
                   Edit
                 </Button>
               </Link>
-              <Button variant="outline-danger">Delete</Button>
+              <Button variant="outline-danger" onClick={handleShow}>
+                Delete
+              </Button>
             </Col>
           </Card>
         </Col>

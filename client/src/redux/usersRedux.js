@@ -1,5 +1,6 @@
 // selectors
 export const getUser = ({ user }) => user
+
 // actions
 const createActionName = (actionName) => `app/users/${actionName}`
 const LOG_IN = createActionName('LOG_IN')

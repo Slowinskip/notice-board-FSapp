@@ -12,12 +12,15 @@ const Logout = () => {
   useEffect(() => {
     const options = {
       method: 'DELETE',
+      credentials: 'include',
     }
 
-    fetch(`${API_URL}auth/logout`, options)
+    fetch(`${API_URL}/auth/logout`, options)
       .then(() => {
         dispatch(logOut())
-        navigate('/')
+        setTimeout(() => {
+          navigate('/')
+        }, 3000)
       })
       .catch((error) => {
         console.log(error)
