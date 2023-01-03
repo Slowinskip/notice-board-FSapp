@@ -9,15 +9,17 @@ router.get('/ads', adsController.getAll)
 router.get('/ads/:id', adsController.getById)
 router.post(
   '/ads',
-  /*authMiddleware,*/ imageUpload.single('image'),
+  authMiddleware,
+  imageUpload.single('image'),
   adsController.post,
 )
-router.delete('/ads/:id', /*authMiddleware,*/ adsController.delete)
+router.delete('/ads/:id', authMiddleware, adsController.delete)
 router.put(
   '/ads/:id',
-  /*authMiddleware,*/ imageUpload.single('image'),
+  authMiddleware,
+  imageUpload.single('image'),
   adsController.edit,
 )
-// router.get('/ads/search/:searchPhrase', adsController.search);
+router.get('/ads/search/:searchPhrase', adsController.searchPhrase)
 
 module.exports = router

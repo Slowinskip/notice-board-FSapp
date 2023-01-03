@@ -63,8 +63,7 @@ exports.login = async (req, res) => {
         res.status(400).send({ message: 'Login or password are incorrect' })
       } else {
         if (bcrypy.compareSync(password, user.password)) {
-          req.session.login = user
-          req.session.id = user._id
+          req.session.login = user.login
 
           res.status(200).send({ message: 'Login successful' })
         } else {
@@ -80,9 +79,12 @@ exports.login = async (req, res) => {
 }
 
 exports.getUser = async (req, res) => {
-  res.send({
-    message: 'You are logged ' + req.session.login + ' ' + req.session.id,
-  })
+  // res.send(req.session.login)
+  try {
+    res.json(req.session.login)
+  } catch (err) {
+    res.status(500).json({ message: err.message })
+  }
 }
 
 exports.logout = async (req, res) => {
@@ -91,5 +93,15 @@ exports.logout = async (req, res) => {
     res.send('Bye Bye')
   } catch (err) {
     res.status(500).send({ message: err.message })
+  }
+}
+
+exports.getUserByLogin = async (req, res) => {
+  try {
+    const user = await User.findOne({ login: req.params.login })
+    if (!user) return res.status(404).json({ message: 'User not found' })
+    res.json(user)
+  } catch (err) {
+    res.status(500).json({ message: err.message })
   }
 }

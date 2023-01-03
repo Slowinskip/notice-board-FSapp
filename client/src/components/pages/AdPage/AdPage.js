@@ -4,17 +4,16 @@ import Col from 'react-bootstrap/Col'
 import Button from 'react-bootstrap/Button'
 import Card from 'react-bootstrap/Card'
 import { API_URL, IMAGES_URL } from '../../../config'
-import { useDispatch } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
-import { getAdById, removeAd, updateAds } from '../../../redux/adsRedux'
+import { getAdById, updateAds } from '../../../redux/adsRedux'
 import styles from './AdPage.module.scss'
 import { Link } from 'react-router-dom'
 import ModalDelete from '../../features/ModalDelete/ModalDelete'
+import { getUser } from '../../../redux/usersRedux'
 const AdPage = () => {
   const navigate = useNavigate()
-  const dispatch = useDispatch()
-
+  const user = useSelector(getUser)
   const adId = useParams()
   const id = adId.id
   const adData = useSelector((state) => getAdById(state, id))
@@ -47,7 +46,6 @@ const AdPage = () => {
         <Col xs="12" lg="5">
           <Card className={styles.card_wrapper}>
             <Card.Img variant="top" src={IMAGES_URL + adData.image} />
-
             <Card.Body>
               <Card.Title className="mb-3">Price: {adData.price}$</Card.Title>
               <Card.Subtitle className="mb-3">
@@ -68,16 +66,18 @@ const AdPage = () => {
               </Card.Text>
               <Card.Text>Phone number: {adData.user.phoneNumber}</Card.Text>
             </Card.Body>
-            <Col className={styles.button} xs="12" lg="4">
-              <Link to={'/ads/edit/' + id}>
-                <Button variant="outline-info" className="m-2">
-                  Edit
+            {user && (
+              <Col className={styles.button} xs="12" lg="4">
+                <Link to={'/ads/edit/' + id}>
+                  <Button variant="outline-info" className="m-2">
+                    Edit
+                  </Button>
+                </Link>
+                <Button variant="outline-danger" onClick={handleShow}>
+                  Delete
                 </Button>
-              </Link>
-              <Button variant="outline-danger" onClick={handleShow}>
-                Delete
-              </Button>
-            </Col>
+              </Col>
+            )}{' '}
           </Card>
         </Col>
       </Row>
