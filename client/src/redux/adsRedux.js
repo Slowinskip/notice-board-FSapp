@@ -1,4 +1,5 @@
 import shortid from 'shortid'
+import { API_URL } from '../config'
 
 export const getAllAds = ({ ads }) => ads
 export const getAdById = ({ ads }, id) => ads.find((ad) => ad._id === id)
@@ -16,7 +17,7 @@ export const addAd = (payload) => ({ type: ADD_AD, payload })
 export const removeAd = (payload) => ({ type: REMOVE_AD, payload })
 export const searchAd = (payload) => ({
   type: SEARCH_ADS,
-  payload,
+  payload: { payload },
 })
 
 const adsReducer = (statePart = [], action) => {
