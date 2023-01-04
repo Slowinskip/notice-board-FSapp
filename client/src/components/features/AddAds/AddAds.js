@@ -13,7 +13,7 @@ const AddAds = () => {
   const dispatch = useDispatch()
 
   const handleSubmit = (ad) => {
-    console.log(ad)
+    console.log(ad.user)
     const fd = new FormData()
     fd.append('title', ad.title)
     fd.append('description', ad.description)
@@ -22,7 +22,7 @@ const AddAds = () => {
     fd.append('localization', ad.localization)
     fd.append('phoneNumber', ad.phoneNumber)
     fd.append('image', ad.image)
-    fd.append('user', user.login)
+    fd.append('user', ad.user)
 
     const options = {
       method: 'POST',

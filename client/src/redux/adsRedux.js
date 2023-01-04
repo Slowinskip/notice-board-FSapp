@@ -1,5 +1,4 @@
 import shortid from 'shortid'
-import { API_URL } from '../config'
 
 export const getAllAds = ({ ads }) => ads
 export const getAdById = ({ ads }, id) => ads.find((ad) => ad._id === id)
