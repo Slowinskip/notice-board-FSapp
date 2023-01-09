@@ -8,39 +8,37 @@ import Adsbox from '../../features/AdsBox/Adsbox'
 import SearchBar from '../../features/SearchBar/SearchBar'
 import { API_URL } from '../../../config'
 import Loader from '../../features/Loader/Loader'
+import axios from 'axios'
+import { logIn } from '../../../redux/usersRedux'
 
 const Search = () => {
   const { searchPhrase } = useParams()
-  console.log(searchPhrase)
-  const dispatch = useDispatch()
-  const ads = useSelector(getAllAds)
-  const [pending, setPending] = useState(false)
-  console.log(pending)
+  const [data, setData] = useState([])
+  const [url, setUrl] = useState(API_URL + '/api/ads/search/' + searchPhrase)
+  const [loading, setLoading] = useState(false)
+  console.log(data, url)
   useEffect(() => {
-    handleUpdate()
-  })
+    setLoading(true)
+    const fetchData = async () => {
+      setUrl(API_URL + '/api/ads/search/' + searchPhrase)
 
-  const handleUpdate = () => {
-    setPending(true)
-    fetch(API_URL + '/api/ads/search/' + searchPhrase).then((res) => {
-      if (res.status === 200) {
-        return res.json().then((ads) => {
-          dispatch(updateAds(ads))
-          setPending(false)
-        })
-      }
-    })
-  }
+      const result = await fetch(url)
+      const resultJson = await result.json()
+      setData(resultJson)
+      setLoading(false)
+    }
 
-  console.log(ads)
+    fetchData()
+  }, [searchPhrase])
 
   return (
     <>
+      {' '}
       <SearchBar />
-      {pending && <Loader />}
-      {!pending && (
+      {loading && <Loader />}
+      {!loading && (
         <Row xs={1} md={3} className="g-3 ">
-          {ads.map((ad) => (
+          {data.map((ad) => (
             <Col key={ad._id}>
               <Adsbox {...ad} />
             </Col>

@@ -10,11 +10,10 @@ const connectToDB = () => {
     dbUri = 'mongodb://localhost:27017/NoticeBoardtest'
   else dbUri = 'mongodb://localhost:27017/NoticeBoard'
 
-  mongoose.connect(
-    'mongodb+srv://patryk_slowinski:' +
-      process.env.password +
-      '@cluster0.iqjsj6s.mongodb.net/NoticeBoard',
-  )
+  mongoose.connect(dbUri, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
   const db = mongoose.connection
 
   // on success
