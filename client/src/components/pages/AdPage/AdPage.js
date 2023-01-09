@@ -11,16 +11,18 @@ import styles from './AdPage.module.scss'
 import { Link } from 'react-router-dom'
 import ModalDelete from '../../features/ModalDelete/ModalDelete'
 import { getUser } from '../../../redux/usersRedux'
+import { getUserId } from '../../../redux/userData'
 const AdPage = () => {
   const navigate = useNavigate()
   const user = useSelector(getUser)
   const adId = useParams()
   const id = adId.id
   const adData = useSelector((state) => getAdById(state, id))
-
+  const userId = useSelector(getUserId)
   const [showModal, setShowModal] = useState(false)
   const handleClose = () => setShowModal(false)
   const handleShow = () => setShowModal(true)
+  console.log(adData.user._id + userId)
 
   const handleDelete = (e) => {
     e.preventDefault()
@@ -66,7 +68,7 @@ const AdPage = () => {
               </Card.Text>
               <Card.Text>Phone number: {adData.user.phoneNumber}</Card.Text>
             </Card.Body>
-            {user && (
+            {userId == adData.user._id && (
               <Col className={styles.button} xs="12" lg="4">
                 <Link to={'/ads/edit/' + id}>
                   <Button variant="outline-info" className="m-2">

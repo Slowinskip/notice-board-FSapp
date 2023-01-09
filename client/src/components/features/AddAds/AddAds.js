@@ -13,7 +13,6 @@ const AddAds = () => {
   const dispatch = useDispatch()
 
   const handleSubmit = (ad) => {
-    console.log(ad.user)
     const fd = new FormData()
     fd.append('title', ad.title)
     fd.append('description', ad.description)
@@ -32,7 +31,7 @@ const AddAds = () => {
     fetch(API_URL + `/api/ads`, options).then((res) => {
       if (res.status === 200) {
         dispatch(addAd(ad))
-        dispatch(updateAds())
+        // dispatch(updateAds())
         navigate('/')
       }
     })
