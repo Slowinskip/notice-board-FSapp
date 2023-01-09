@@ -37,14 +37,14 @@ const AdPage = () => {
   return (
     <div>
       <Row className="d-flex justify-content-center mt-5">
-        if (showModal)
-        {
+        {showModal && (
           <ModalDelete
             showModal={showModal}
             handleClose={handleClose}
             handleDelete={handleDelete}
           />
-        }
+        )}
+
         <Col xs="12" lg="5">
           <Card className={styles.card_wrapper}>
             <Card.Img variant="top" src={IMAGES_URL + adData.image} />

@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { API_URL } from '../../../config'
 import { addAd, updateAds } from '../../../redux/adsRedux'
+import { getUserId } from '../../../redux/userData'
 import { getUser } from '../../../redux/usersRedux'
 import AdForm from '../AdForm/AdForm'
 
@@ -11,9 +12,11 @@ const AddAds = () => {
   console.log(user)
   const navigate = useNavigate()
   const dispatch = useDispatch()
+  const userId = useSelector(getUserId)
 
   const handleSubmit = (ad) => {
     const fd = new FormData()
+    console.log(ad.user)
     fd.append('title', ad.title)
     fd.append('description', ad.description)
     fd.append('date', ad.date)
@@ -32,12 +35,12 @@ const AddAds = () => {
       if (res.status === 200) {
         dispatch(addAd(ad))
         // dispatch(updateAds())
-        navigate('/')
+        // navigate('/')
       }
     })
   }
 
-  return <AdForm action={handleSubmit} actionText="Add" />
+  return <AdForm action={handleSubmit} actionText="Add" userId={userId} />
 }
 
 export default AddAds

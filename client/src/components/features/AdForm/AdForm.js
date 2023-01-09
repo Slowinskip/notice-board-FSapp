@@ -2,31 +2,8 @@ import React, { useEffect, useState } from 'react'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import { useForm } from 'react-hook-form'
-import { useDispatch, useSelector } from 'react-redux'
-import { getUser } from '../../../redux/usersRedux'
-import { API_URL } from '../../../config'
-import { getUserId, updateData } from '../../../redux/userData'
 const AdForm = ({ action, actionText, ...props }) => {
-  const updateDate = '20.01.2022'
-  const dispatch = useDispatch()
-  const user = useSelector(getUser)
-  console.log(user)
-
-  useEffect(() => {
-    if (user) {
-      fetch(API_URL + '/auth/user/' + user.login).then((res) => {
-        if (res.status === 200) {
-          return res.json().then((data) => {
-            console.log(data._id)
-            dispatch(updateData(data._id))
-          })
-        }
-      })
-    }
-  })
-
-  const userId = useSelector(getUserId)
-  console.log(userId)
+  const updateDate = new Date()
 
   const id = props.id
   const [price, setPrice] = useState(props.price || '')
@@ -36,6 +13,8 @@ const AdForm = ({ action, actionText, ...props }) => {
   const [date, setDate] = useState(props.date || updateDate)
   const [image, setImage] = useState(props.image || '')
   const [phoneNumber, setPhone] = useState(props.phoneNumber || '')
+  const [user, setUser] = useState(props.userId || '')
+  console.log(props.userId)
   const {
     register,
     handleSubmit: validate,
@@ -47,8 +26,8 @@ const AdForm = ({ action, actionText, ...props }) => {
       action({
         price,
         title,
-        user: userId,
-        date: date,
+        user,
+        date: updateDate,
         description,
         localization,
         id,
