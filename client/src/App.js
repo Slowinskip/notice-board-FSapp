@@ -24,7 +24,7 @@ const App = () => {
           <Route path="/register" element={<Register />} />
           <Route path="/logout" element={<Logout />} />
           <Route path="/addAds" element={<AddAds />} />
-          <Route path="/search/:searchPhrase" element={<Search />} />
+          <Route path="/search" element={<Search />} />
         </Routes>
       </Container>
       <Footer />
