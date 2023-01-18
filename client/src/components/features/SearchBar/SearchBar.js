@@ -10,10 +10,6 @@ const SearchBar = ({ action }) => {
   const [search, setSearch] = useState()
   console.log(search)
 
-  const handleSubmit = (e) => {
-    action({ search })
-  }
-
   return (
     <div className={styles.container}>
       <div>
@@ -25,8 +21,8 @@ const SearchBar = ({ action }) => {
         <Button
           as={Link}
           variant="primary"
-          onClick={() => handleSubmit()}
-          to={'/search'}
+          onClick={() => {}}
+          to={'/search/' + search}
         >
           Add Ads
         </Button>
